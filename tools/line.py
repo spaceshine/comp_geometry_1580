@@ -34,5 +34,16 @@ class Line:  # прямая на плоскости (ax + by + c = 0)
     def perpendicular(self, P0: P):
         return Line(-self.b, self.a, self.c + self.b*(P0.x + P0.y) + self.a*(P0.x - P0.y))
 
+    def parallel(self, P0: P):
+        return Line(self.a, self.b, -(self.a * P0.x + self.b * P0.y))
+
     def __str__(self):
         return f"{self.a} {self.b} {self.c}"
+
+
+def reflect(P0: P, l: Line):  # отражение точки относительно прямой
+    # решение системы линейных уравнений (middle_point(P0, P_) -> l) and (Vec(P0, P_) is_perp l)
+    x_ = -(2*l.a*l.b*P0.y + (l.a**2 - l.b**2)*P0.x + 2*l.a*l.c) / (l.a**2 + l.b**2)
+    y_ = -(2*l.a*l.b*P0.x + (l.b**2 - l.a**2)*P0.y + 2*l.b*l.c) / (l.a**2 + l.b**2)
+
+    return P(x_, y_)

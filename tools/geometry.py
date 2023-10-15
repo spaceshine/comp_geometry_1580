@@ -88,8 +88,32 @@ def arc_length(O: P, r, A: P, B: P):
     return r * math.acos(cosalpha)
 
 
+def perp_bisector(A: P, B: P):
+    return Line.by_normal(middle_point(A, B), Vec(A, B))
+
+
 def equilateral_triangle(P1: P, P2: P):  # равносторонний треугольник на [P1 P2]
     main_side = Vec(P1, P2)
     perp_bisectors = main_side.to_avec().perpendiculars()
 
     return [(main_side*0.5 + perp*(math.sqrt(3)/2)).P2 for perp in perp_bisectors]
+
+
+def is_segment_intersection(V1: Vec, V2: Vec):  # проверяет пересекаются ли отрезки [A B] и [C D]
+    A, B = V1.P1, V1.P2
+    C, D = V2.P1, V2.P2
+    sk1 = skew(Vec(A, B), Vec(A, C)) * skew(Vec(A, B), Vec(A, D))
+    sk2 = skew(Vec(C, D), Vec(C, A)) * skew(Vec(C, D), Vec(C, B))
+
+    if sk1 == 0 and sk2 == 0:
+        if dot(Vec(C, A), Vec(C, B)) <= 0 or \
+                dot(Vec(D, A), Vec(D, B)) <= 0 or \
+                dot(Vec(A, C), Vec(A, D)) <= 0 or \
+                dot(Vec(B, C), Vec(B, D)) <= 0:
+            return True
+        else:
+            return False
+
+    if sk1 <= 0 and sk2 <= 0:
+        return True
+    return False
