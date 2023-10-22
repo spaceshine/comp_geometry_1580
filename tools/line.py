@@ -2,6 +2,7 @@ import math
 from tools.point import *
 from tools.vector import *
 
+
 class Line:  # прямая на плоскости (ax + by + c = 0)
     def __init__(self, a, b, c):
         self.a = a
